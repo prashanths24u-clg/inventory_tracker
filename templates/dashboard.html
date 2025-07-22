@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="container py-4">
+    <h2>📊 Dashboard</h2>
+    <a href="/" class="btn btn-secondary mb-4">← Back to Inventory</a>
+
+    <!-- Product Quantity Bar Chart -->
+    <h4>Product Quantities</h4>
+    <canvas id="barChart" width="400" height="200"></canvas>
+
+    <!-- Order Status Pie Chart -->
+    <h4 class="mt-5">Order Status</h4>
+    <canvas id="pieChart" style="max-width: 300px; max-height: 300px;"></canvas>
+
+
+    <script>
+        // Bar Chart
+        const barCtx = document.getElementById('barChart').getContext('2d');
+        new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: {{ product_names | tojson }},
+                datasets: [{
+                    label: 'Quantity in Stock',
+                    data: {{ product_qtys | tojson }},
+                    backgroundColor: 'rgba(54, 162, 235, 0.7)'
+                }]
+            }
+        });
+
+        // Pie Chart
+        const pieCtx = document.getElementById('pieChart').getContext('2d');
+        new Chart(pieCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Delivered', 'Pending'],
+                datasets: [{
+                    data: [{{ delivered }}, {{ pending }}],
+                    backgroundColor: ['#28a745', '#ffc107']
+                }]
+            }
+        });
+    </script>
+</body>
+</html>
